@@ -7,28 +7,34 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Daily Report</title>
-        <link rel="stylesheet" type="text/css" href="../styles/index.css">
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles/index.css">
     </head>
     <body>
         <h1>Daily Report</h1>
         
         <!-- ID insertion -->
-        <p>${idInsertionMsg}</p>
-        <form action="" method="POST">
-            <input name="action" value="insertId" hidden>
-            <label>ID (4-8 letters)</label>
-            <input name="id" minlength="4" maxlength="8" required>
-        </form>
+        <div>
+            <p>${idInsertionMsg}</p>
+            <form action="" method="POST">
+                <input name="action" value="insertId" hidden>
+                <label>ID (4-8 letters)</label>
+                <input name="id" minlength="4" maxlength="8" required>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
         
         <c:if test="${ifGotId}">
+            
             <!-- Input tasks -->
             <form action="" method="POST">
                 <dr:hourInputs>
-                    <input name="action" value="submit" hidden>
-                    <label>${hour}</label>
-                    <input name="${hour.task}" value=""${hour.value}>
+                    <div>
+                        <input name="action" value="submit" hidden>
+                        <label>${hour}</label>
+                        <input name="${hourTask}" value="${hourValue}">
+                    </div>
                 </dr:hourInputs>
-                <input type="submit">    
+                <input type="submit" value="Submit">    
             </form>
 
             <!-- Hour range control --> 
@@ -39,12 +45,14 @@
 
                 <label>Starting from...</label>
                 <input name="hourFrom" type="number" min="0" max="23">
-                <label>To...</label>
+                <label>to...</label>
                 <input name="hourTo" type="number" min="0" max="23">   
 
-                <input type="submit">
+                <input type="submit" value="Submit">
             </form> 
             <p>${changeHourRangeMsg}</p>
+            
         </c:if>
+           
     </body>
 </html>

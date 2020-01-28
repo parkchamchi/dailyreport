@@ -30,6 +30,7 @@ public class ReportSetConverter {
         String tokenized = "";
         for (int i = 0; i < 24; i++)
             tokenized += r.getTask(i) + "\n";
+        rs.setTaskString(tokenized);
         
         return rs;
     }
