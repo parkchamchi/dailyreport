@@ -1,21 +1,22 @@
 package dailyreport.util;
 
 import java.util.StringTokenizer;
+import java.util.Date;
 
 import dailyreport.business.ReportSet;
 import dailyreport.report.Report;
-import java.util.HashSet;
-import java.util.Set;
 
 public class ReportSetConverter {
     static public Report ReportSetToReport(ReportSet rs) {
         Report r = new Report();
-        
         if (rs != null) {
-            StringTokenizer st = new StringTokenizer(rs.getTaskString(), "\n");
-
-            for (int hour = 0; hour < 24 && st.hasMoreTokens(); hour++)
-                r.setTask(hour, st.nextToken());
+            /*Set date*/
+            r.setDate(rs.getDate());
+            
+            /*Set tasks*/
+            String[] tasks = rs.getTaskString().split("\n", 24);
+            for (int hour = 0; hour < 24; hour++)
+                r.setTask(hour, tasks[hour]);
         }
         
         return r;
@@ -24,12 +25,15 @@ public class ReportSetConverter {
     static public ReportSet ReportToReportSet(Report r, String id) {
         ReportSet rs = new ReportSet();
         
-        rs.setId(id);
+        rs.setId(id); //set id
         
-        /*Tokenization*/
+        rs.setDate(r.getDate()); //set date
+        
+        //set taskString
         String tokenized = "";
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < 23; i++)
             tokenized += r.getTask(i) + "\n";
+        tokenized += r.getTask(23);
         rs.setTaskString(tokenized);
         
         return rs;

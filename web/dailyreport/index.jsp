@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="dr" uri="/WEB-INF/tlds/dailyreport.tld" %>
 
+<!-- TODO:Allow Hangul to be input -->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,12 +20,12 @@
             <form action="" method="POST">
                 <input name="action" value="insertId" hidden>
                 <label>ID (4-8 letters)</label>
-                <input name="id" minlength="4" maxlength="8" required>
+                <input name="id" minlength="4" maxlength="8" value="${id}" required>
                 <input type="submit" value="Submit">
             </form>
         </div>
         
-        <c:if test="${ifGotId}">
+        <c:if test="${id != null}">
             
             <!-- Input tasks -->
             <form action="" method="POST">

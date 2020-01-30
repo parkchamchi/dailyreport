@@ -1,6 +1,5 @@
 package dailyreport.report;
 
-import java.util.Date;
 import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -10,8 +9,9 @@ import dailyreport.data.ReportSetDB;
 import dailyreport.util.ReportSetConverter;
 
 public class DailyReportServlet extends HttpServlet {
-    private boolean ifGotId = false;
+    //private boolean ifGotId = false;
     private String id;
+    private Report report;
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -19,8 +19,7 @@ public class DailyReportServlet extends HttpServlet {
     {    
         HttpSession session = request.getSession();
         String url = "/dailyreport/index.jsp";
-        Report report;
-        Date date;
+        //request.setCharacterEncoding("euc-kr");
 
         String action = request.getParameter("action");
 
@@ -33,34 +32,37 @@ public class DailyReportServlet extends HttpServlet {
              if (!(4 <= id.length() && id.length() <= 8)) {
                  request.setAttribute("idInsertionMsg", "Invalid id.");
                  report = null;
-                 ifGotId = false;
-                 
+                 //ifGotId = false;
+                 id = null; //set id to null
              }
              else {
                 request.setAttribute("idInsertionMsg", "");
-                ifGotId = true;
+                //ifGotId = true;
 
                 ReportSet rs = ReportSetDB.getReportSetById(id);
-
-                /*Convert ReportSet to Report*/
-                date = rs.getDate();
-                report = ReportSetConverter.ReportSetToReport(rs);
-                session.setAttribute("report", report);
+                
+                /*If ReportSet is null, create a Report*/
+                if (rs == null)
+                    report = new Report();
+                /*else, convert ReportSet to Report*/
+                else
+                    report = ReportSetConverter.ReportSetToReport(rs);
              }
         }
         else if (action != null && action.equals("submit")) {
             for (int hour = 0; hour < 24; hour++) {
                 String hourTask = request.getParameter("task" + hour);
                 
-                if (hourTask != null && !hourTask.equals(""))
-                    report.setTask(hour, hourTask); //report should be class var.
+                report.setTask(hour, hourTask);
             }
             
             ReportSet rs = ReportSetConverter.ReportToReportSet(report, id);
-            ReportSet.update(rs);
+            ReportSetDB.update(rs);
         }
         
-        session.setAttribute("ifGotId", ifGotId);
+        //session.setAttribute("ifGotId", ifGotId);
+        session.setAttribute("id", id);
+        session.setAttribute("report", report);
         getServletContext()
                 .getRequestDispatcher(url)
                 .forward(request, response);

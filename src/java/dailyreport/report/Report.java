@@ -7,6 +7,7 @@ public class Report {
     private String[] tasks;
 
     public Report() {
+        date = new Date();
         tasks = new String[24];
     }
     
