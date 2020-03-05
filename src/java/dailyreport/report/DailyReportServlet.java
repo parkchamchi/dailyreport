@@ -30,13 +30,13 @@ public class DailyReportServlet extends HttpServlet {
 
              /*Validate id*/
              if (!(4 <= id.length() && id.length() <= 8)) {
-                 request.setAttribute("idInsertionMsg", "Invalid id.");
+                 session.setAttribute("idInsertionMsg", "Invalid id.");
                  report = null;
                  //ifGotId = false;
                  id = null; //set id to null
              }
              else {
-                request.setAttribute("idInsertionMsg", "");
+                session.setAttribute("idInsertionMsg", "");
                 //ifGotId = true;
 
                 ReportSet rs = ReportSetDB.getReportSetById(id);
@@ -58,6 +58,36 @@ public class DailyReportServlet extends HttpServlet {
             
             ReportSet rs = ReportSetConverter.ReportToReportSet(report, id);
             ReportSetDB.update(rs);
+        }
+        else if (action != null && action.equals("changeHoursRange")) {
+            Integer fromHour = null, toHour = null;
+            
+            try {
+                fromHour = Integer.valueOf(request.getParameter("fromHour"));
+                toHour = Integer.valueOf(request.getParameter("toHour"));
+            }
+            catch (NumberFormatException exc) {
+                session.setAttribute("changeHourRangeMsg", "Invalid input");
+            }
+            
+            /*if valid input*/
+            if (fromHour != null && toHour != null) {
+                if ((0 <= fromHour && fromHour <= 23) && (0 <= toHour && toHour <= 23) &&
+                    (fromHour <= toHour)) 
+                {
+                    report.setFromHour(fromHour);
+                    report.setToHour(toHour);
+                   
+                    session.setAttribute("changeHourRangeMsg", "");
+                    
+                    ReportSet rs = ReportSetConverter.ReportToReportSet(report, id);
+                    ReportSetDB.update(rs); 
+                }
+                else {
+                    session.setAttribute("changeHourRangeMsg", "Invalid input");
+                }
+            }
+            
         }
         
         //session.setAttribute("ifGotId", ifGotId);

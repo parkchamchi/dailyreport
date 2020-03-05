@@ -46,9 +46,9 @@
                 <input name="action" value="changeHoursRange" hidden>
 
                 <label>Starting from...</label>
-                <input name="hourFrom" type="number" min="0" max="23">
+                <input name="fromHour" type="number" min="0" max="23">
                 <label>to...</label>
-                <input name="hourTo" type="number" min="0" max="23">   
+                <input name="toHour" type="number" min="0" max="23">   
 
                 <input type="submit" value="Submit">
             </form> 

@@ -2,21 +2,14 @@ package dailyreport.business;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 public class ReportSet implements Serializable {
     @Id
     private String id;
-    @Temporal(TemporalType.DATE)
-    private Date date;
-    /*taskString consists as this:
-    task of 00:00\n
-    task of 01:00\n
-    ...
-    task of 23:00
-    */
+    
     private String taskString;
+    private int fromHour, toHour;
 
     public ReportSet() {
         
@@ -30,19 +23,27 @@ public class ReportSet implements Serializable {
         this.id = id;
     }
     
-    public Date getDate() {
-        return date;
-    }
-    
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    
     public String getTaskString() {
         return taskString;
     }
     
     public void setTaskString(String taskString) {
         this.taskString = taskString;
+    }
+    
+    public int getFromHour() {
+        return this.fromHour;
+    }
+    
+    public void setFromHour(int fromHour) {
+        this.fromHour = fromHour;
+    }
+    
+    public int getToHour() {
+        return this.toHour;
+    }
+    
+    public void setToHour(int toHour) {
+        this.toHour = toHour;
     }
 }

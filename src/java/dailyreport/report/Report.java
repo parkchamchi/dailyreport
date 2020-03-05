@@ -1,24 +1,15 @@
 package dailyreport.report;
 
-import java.util.Date;
-
 public class Report {
-    private Date date;
     private String[] tasks;
+    private int fromHour, toHour;
 
     public Report() {
-        date = new Date();
         tasks = new String[24];
+        fromHour = 0;
+        toHour = 23;
     }
-    
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    
-    public Date getDate() {
-        return date;
-    }
-
+ 
     public void setTask(int hour, String task) {
         tasks[hour] = task;
     }
@@ -30,5 +21,21 @@ public class Report {
                    return "";
            else
                    return task;
+    }
+    
+    public int getFromHour() {
+        return this.fromHour;
+    }
+    
+    public void setFromHour(int fromHour) {
+        this.fromHour = fromHour;
+    }
+    
+    public int getToHour() {
+        return this.toHour;
+    }
+    
+    public void setToHour(int toHour) {
+        this.toHour = toHour;
     }
 }

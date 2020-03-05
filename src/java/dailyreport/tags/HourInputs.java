@@ -11,10 +11,10 @@ public class HourInputs extends BodyTagSupport {
     private int hour;
     private Report report;
     
+    private int fromHour, toHour;
+    
     @Override
     public int doStartTag() {
-        hour = 0;
-        
         report = (Report) pageContext.findAttribute("report");
         
         if (report == null)
@@ -25,13 +25,18 @@ public class HourInputs extends BodyTagSupport {
     
     @Override
     public void doInitBody() throws JspException {
+        fromHour = report.getFromHour();
+        toHour = report.getToHour();
+        
+        hour = fromHour;
+        
         setHourAttributes();
     }
     
     @Override
     public int doAfterBody() throws JspException {
         try {
-            if (hour < 24) {
+            if (hour <= toHour) {
                 setHourAttributes();
                 return EVAL_BODY_AGAIN;
             }
